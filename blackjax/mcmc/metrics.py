@@ -30,6 +30,7 @@ We can also generate a relativistic dynamic :cite:p:`lu2017relativistic`.
 """
 from typing import Callable, NamedTuple, Optional, Protocol, Union
 
+import jax
 import jax.numpy as jnp
 import jax.scipy as jscipy
 from jax.flatten_util import ravel_pytree
@@ -342,6 +343,7 @@ def _format_covariance(cov: Array, is_inv):
     elif ndim == 2:
         identity = jnp.identity(cov.shape[0])
         if is_inv:
+            jax.debug.print("cholesky!")
             inv_cov_sqrt = jscipy.linalg.cholesky(cov, lower=True)
             cov_sqrt = jscipy.linalg.solve_triangular(
                 inv_cov_sqrt, identity, lower=True, trans=True
